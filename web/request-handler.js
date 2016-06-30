@@ -1,6 +1,7 @@
 var path = require('path');
 var fs = require('fs');
 var archive = require('../helpers/archive-helpers');
+var _ = require('underscore');
 // require more modules/folders here!
 
 var headers = {
@@ -13,27 +14,34 @@ var headers = {
 var statusCode = 200;
 
 exports.handleRequest = function (req, res) {
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204, headers);
+    res.end();
+  }
+
   if (req.method === 'GET') {
+    console.log('start new get request=============')
     if (req.url.length === 1) {
       fs.readFile(path.join(__dirname, '/public/index.html'), 'utf8', (err, data) => {
         res.writeHead(statusCode, headers);
         res.end(JSON.stringify(data));
       });
-    } else if (archive.isUrlInList(req.url.slice(1))) {
-      fs.readFile(archive.paths.archivedSites + req.url, 'utf8', (err, data) => {
+    } else if (archive.isUrlInList(req.url.slice(6), () => {
+      fs.readFile(archive.paths.archivedSites + '/' + req.url.slice(6), 'utf8', (err, data) => {
+        console.log('this is the data from readFile: ', data)
         if (err) { 
-          console.log('failed to readFile from req.handler');
-        } else {
-          console.log(JSON.stringify(data));
+          console.log('failed to readFile from req.handler', err);
+          statusCode = 404;
           res.writeHead(statusCode, headers);
+          res.end();
+        } else {
+          console.log('heard back from readfile', JSON.stringify(data));
+          res.writeHead(200, headers);
           res.end(JSON.stringify(data));
         }
       });
-    } else {
-      console.log('we are in the end else function');
-      statusCode = 404;
-      res.writeHead(statusCode, headers);
-      res.end();
+    })) {
+      // WHAT TO DO IN HERE ELSE IF
     }
   }
 
