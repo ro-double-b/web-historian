@@ -2,10 +2,13 @@
 <html>
 <head>
   <link rel="stylesheet" type="text/css" href="styles.css" />
+  <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="app.js"></script>
 </head>
 <body>
-  <form method="POST">
-    <input type="input" name="url"></input>
+  <form method="POST" id="send">
+    <input type="input" name="url" class="input"/>
+    <input type="submit" name="submit" class="submit"/>
   </form>
   Our robots are currently archiving the site you requested. Please check back soon for a freshly embalmed copy!
 </body>

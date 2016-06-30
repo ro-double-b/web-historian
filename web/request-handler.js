@@ -20,7 +20,6 @@ exports.handleRequest = function (req, res) {
   }
 
   if (req.method === 'GET') {
-    console.log('start new get request=============')
     if (req.url.length === 1) {
       fs.readFile(path.join(__dirname, '/public/index.html'), 'utf8', (err, data) => {
         res.writeHead(statusCode, headers);
@@ -28,7 +27,7 @@ exports.handleRequest = function (req, res) {
       });
     } else if (archive.isUrlInList(req.url.slice(6), () => {
       fs.readFile(archive.paths.archivedSites + '/' + req.url.slice(6), 'utf8', (err, data) => {
-        console.log('this is the data from readFile: ', data)
+        console.log('this is the data from readFile: ', data);
         if (err) { 
           console.log('failed to readFile from req.handler', err);
           statusCode = 404;

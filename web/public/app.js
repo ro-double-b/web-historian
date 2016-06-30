@@ -7,12 +7,14 @@ $(document).ready(function() {
       contentType: 'application/json',
       data: {url: urlRequested},
       success: (data) => {
-        console.log(data)
+        console.log(data);
+        $('body').empty();
+        $('body').append(data);
         alert('success', data);
       },
 
       error: (data, err, errstr) => {
-        console.log(errstr)
+        console.log(errstr);
         alert('error', data, err, errstr);
       }
     });
