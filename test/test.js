@@ -26,7 +26,7 @@ describe('server', function() {
   });
 
   describe('archived websites', function () {
-    describe('GET', function () {
+    xdescribe('GET', function () {
       it('should return the content of a website from the archive', function (done) {
         var fixtureName = 'www.google.com';
         var fixturePath = archive.paths.archivedSites + '/' + fixtureName;
@@ -52,7 +52,7 @@ describe('server', function() {
       });
     });
 
-    xdescribe('POST', function () {
+    describe('POST', function () {
       it('should append submitted sites to \'sites.txt\'', function(done) {
         var url = 'www.example.com';
 

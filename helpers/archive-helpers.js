@@ -30,19 +30,24 @@ exports.readListOfUrls = function() {
 };
 
 exports.isUrlInList = function(urlRequested) {
-  var urlList = exports.readListOfUrls();
-  var parseUrlList = JSON.parse(urlList);
-
-  if (parseUrlList[urlRequested]) {
+  var urlString = exports.readListOfUrls();
+  if (urlString.indexOf(urlRequested) !== -1) {
     return true;
   } else {
-    exports.addUrlToList(urlRequested);
     return false;
   }
 };
 
 exports.addUrlToList = function(urlToAdd) {
-  console.log('in add', urlToAdd);
+  if (!exports.isUrlInList(urlToAdd)) {
+    fs.writeFile(exports.paths.list, urlToAdd + '\n', function(err) {
+      if (err) {
+        console.log('failed to write file', err);
+      } else {
+        console.log('success to write file');
+      }
+    });
+  }
 };
 
 exports.isUrlArchived = function() {

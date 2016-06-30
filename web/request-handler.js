@@ -13,7 +13,6 @@ var headers = {
 var statusCode = 200;
 
 exports.handleRequest = function (req, res) {
-
   if (req.method === 'GET') {
     if (req.url.length === 1) {
       fs.readFile(path.join(__dirname, '/public/index.html'), 'utf8', (err, data) => {
@@ -31,5 +30,22 @@ exports.handleRequest = function (req, res) {
       res.writeHead(statusCode, headers);
       res.end();
     }
+  }
+
+
+  if (req.method === 'POST') {
+    var data = '';
+
+    req.on('data', function (chunk) {
+      data += chunk;
+    });
+
+    req.on('end', function() {
+      archive.addUrlToList(data.slice(4));
+      statusCode = 302;
+      res.writeHead(statusCode, headers);
+      res.end();
+    });
+    // archive.addUrlToList(req.url.slice(1));
   }
 };
