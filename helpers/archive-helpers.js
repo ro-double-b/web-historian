@@ -25,21 +25,25 @@ exports.initialize = function(pathsObj) {
 // The following function names are provided to you to suggest how you might
 // modularize your code. Keep it clean!
 
-exports.readListOfUrls = function() {
-  return fs.readFileSync(exports.paths.list, 'utf8');
+exports.readListOfUrls = function(cb) {
+  fs.readFile(exports.paths.list, 'utf8', function(err, data) {
+    if (err) {
+      console.log('failed to read file', data);
+    } else {
+      console.log('able to read file', data);
+      cb(data.split('\n'));
+    }
+  });
 };
 
-exports.isUrlInList = function(urlRequested) {
-  var urlString = exports.readListOfUrls();
-  if (urlString.indexOf(urlRequested) !== -1) {
-    return true;
-  } else {
-    return false;
-  }
+exports.isUrlInList = function(urlRequested, cb) {
+  return exports.readListOfUrls( function(list) {
+    cb(list.indexOf(urlRequested) !== -1);
+  });
 };
 
-exports.addUrlToList = function(urlToAdd) {
-  if (!exports.isUrlInList(urlToAdd)) {
+exports.addUrlToList = function(urlToAdd, cb) {
+  if (!exports.isUrlInList(urlToAdd, cb)) {
     fs.writeFile(exports.paths.list, urlToAdd + '\n', function(err) {
       if (err) {
         console.log('failed to write file', err);
@@ -50,7 +54,16 @@ exports.addUrlToList = function(urlToAdd) {
   }
 };
 
-exports.isUrlArchived = function() {
+exports.isUrlArchived = function(urlToCheck, cb) {
+  fs.readFile(exports.paths.archivedSites + '/' + urlToCheck, 'utf8', (err, data) => {
+    console.log(data);
+    if (err) {
+      console.log(err);
+      cb(false);
+    } else {
+      cb(true);
+    }
+  });
 };
 
 exports.downloadUrls = function() {

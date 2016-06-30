@@ -21,11 +21,16 @@ exports.handleRequest = function (req, res) {
       });
     } else if (archive.isUrlInList(req.url.slice(1))) {
       fs.readFile(archive.paths.archivedSites + req.url, 'utf8', (err, data) => {
-        console.log(JSON.stringify(data));
-        res.writeHead(statusCode, headers);
-        res.end(JSON.stringify(data));
+        if (err) { 
+          console.log('failed to readFile from req.handler');
+        } else {
+          console.log(JSON.stringify(data));
+          res.writeHead(statusCode, headers);
+          res.end(JSON.stringify(data));
+        }
       });
     } else {
+      console.log('we are in the end else function');
       statusCode = 404;
       res.writeHead(statusCode, headers);
       res.end();
