@@ -56,9 +56,7 @@ exports.addUrlToList = function(urlToAdd, cb) {
 
 exports.isUrlArchived = function(urlToCheck, cb) {
   fs.readFile(exports.paths.archivedSites + '/' + urlToCheck, 'utf8', (err, data) => {
-    console.log(data);
     if (err) {
-      console.log(err);
       cb(false);
     } else {
       cb(true);
@@ -66,5 +64,14 @@ exports.isUrlArchived = function(urlToCheck, cb) {
   });
 };
 
-exports.downloadUrls = function() {
+exports.downloadUrls = function(urlList) {
+  urlList.forEach(function(item) {
+    fs.writeFile(exports.paths.archivedSites + '/' + item, 'hi', function(err) {
+      if (err) {
+        console.log('unable to write');
+      } else {
+        console.log('wrote successfully');
+      }
+    });
+  });
 };
