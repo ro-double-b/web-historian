@@ -36,11 +36,13 @@ exports.isUrlInList = function(urlRequested) {
   if (parseUrlList[urlRequested]) {
     return true;
   } else {
+    exports.addUrlToList(urlRequested);
     return false;
   }
 };
 
-exports.addUrlToList = function() {
+exports.addUrlToList = function(urlToAdd) {
+  console.log('in add', urlToAdd);
 };
 
 exports.isUrlArchived = function() {
