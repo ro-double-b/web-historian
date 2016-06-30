@@ -14,8 +14,9 @@ $(document).ready(function() {
       },
 
       error: (data, err, errstr) => {
-        console.log(errstr);
-        alert('error', data, err, errstr);
+        $('p').empty();
+        $('form').append('<p>Our robots are currently archiving the site you requested. Please check back soon for a freshly embalmed copy!</p>');
+        console.log('error', data, err, errstr);
       }
     });
   };

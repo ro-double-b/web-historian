@@ -25,7 +25,7 @@ exports.handleRequest = function (req, res) {
         res.writeHead(statusCode, headers);
         res.end(JSON.stringify(data));
       });
-    } else if (archive.isUrlInList(req.url.slice(6), () => {
+    } else if (archive.isUrlInList(req.url.slice(6), () => { //c1
       fs.readFile(archive.paths.archivedSites + '/' + req.url.slice(6), 'utf8', (err, data) => {
         console.log('this is the data from readFile: ', data);
         if (err) { 
@@ -39,8 +39,11 @@ exports.handleRequest = function (req, res) {
           res.end(JSON.stringify(data));
         }
       });
+    }, () => {
+      statusCode = 404;
+      res.writeHead(statusCode, headers);
+      res.end();
     })) {
-      // WHAT TO DO IN HERE ELSE IF
     }
   }
 
