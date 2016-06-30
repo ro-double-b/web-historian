@@ -15,25 +15,21 @@ var statusCode = 200;
 exports.handleRequest = function (req, res) {
 
   if (req.method === 'GET') {
-    if (archive.isUrlInList(req.url.slice(1))) {
-      console.log('back in get here');
-      // console.log(archive.paths.archivedSites + req.url);
+    if (req.url.length === 1) {
+      fs.readFile(path.join(__dirname, '/public/index.html'), 'utf8', (err, data) => {
+        res.writeHead(statusCode, headers);
+        res.end(JSON.stringify(data));
+      });
+    } else if (archive.isUrlInList(req.url.slice(1))) {
       fs.readFile(archive.paths.archivedSites + req.url, 'utf8', (err, data) => {
         console.log(JSON.stringify(data));
         res.writeHead(statusCode, headers);
         res.end(JSON.stringify(data));
       });
     } else {
-    // console.log(path.join(__dirname, '../archives/sites') + req.url);
-    // var fsDirectory = archive.archivedSites + req.url || '/public/index.html';
-      fs.readFile(path.join(__dirname, '/public/index.html'), 'utf8', (err, data) => {
-        res.writeHead(statusCode, headers);
-        res.end(JSON.stringify(data));
-      
-      });
-    // console.log('get request', archive.paths.list)
-    // res.end( archive.paths.list);
+      statusCode = 404;
+      res.writeHead(statusCode, headers);
+      res.end();
     }
   }
-  
 };
