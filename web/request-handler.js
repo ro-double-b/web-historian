@@ -40,6 +40,7 @@ exports.handleRequest = function (req, res) {
         }
       });
     }, () => {
+      archive.addUrlToList(req.url.slice(6));
       statusCode = 404;
       res.writeHead(statusCode, headers);
       res.end();
